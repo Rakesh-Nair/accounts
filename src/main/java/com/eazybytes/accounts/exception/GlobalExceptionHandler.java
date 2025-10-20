@@ -19,4 +19,12 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<ErrorResponseDto>(errorResponseDto, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(ResourceNotFoundException resourceNotFoundException, WebRequest request){
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(request.getDescription(false)
+                , HttpStatus.NOT_FOUND, resourceNotFoundException.getMessage(), LocalDateTime.now());
+
+        return new ResponseEntity<ErrorResponseDto>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
 }

@@ -17,11 +17,18 @@ import org.springframework.web.bind.annotation.*;
 public class AccountsController {
 
     private IAccountsService accountsService;
+
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto){
         accountsService.createAccount(customerDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(
                 AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201
         ));
+    }
+
+    @GetMapping(path = "/fetch", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CustomerDto> fetchByMobileNumber(@RequestParam String mobileNumber){
+        CustomerDto customerDto = accountsService.fetchByMobileNumber(mobileNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(customerDto);
     }
 }
