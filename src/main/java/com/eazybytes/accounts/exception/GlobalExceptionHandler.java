@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(ResourceNotFoundException resourceNotFoundException, WebRequest request){
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException, WebRequest request){
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(request.getDescription(false)
                 , HttpStatus.NOT_FOUND, resourceNotFoundException.getMessage(), LocalDateTime.now());
 
