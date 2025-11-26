@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,17 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-@AllArgsConstructor
 @Validated
 public class AccountsController {
 
     private IAccountsService accountsService;
 
+    @Value("${build.info}")
+    private String buildInfo;
+
+    public AccountsController(IAccountsService accountsService){
+        this.accountsService = accountsService;
+    }
     @Operation(
             summary = "Create Account Rest API",
             description = "Create an account for a customer using a POST call"
@@ -48,12 +54,22 @@ public class AccountsController {
         ));
     }
     @Operation(
-            summary = "Read Account Rest API",
-            description = "Fetch for a customer using a GET call"
+            summary = "Fetch Account Details REST API",
+            description = "REST API to fetch Customer &  Account details based on a mobile number"
     )
-    @ApiResponse(
-            responseCode = "201",
-            description = "HTTP status CREATED"
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
     )
     @GetMapping(path = "/fetch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CustomerDto> fetchByMobileNumber(@RequestParam
@@ -131,5 +147,28 @@ public class AccountsController {
         } else{
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(
+            summary = "Fetch Build Info details",
+            description = "REST API to fetch build info details"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @GetMapping(path = "/build-info")
+    public ResponseEntity<String> fetchBuildInfo(){
+        return ResponseEntity.status(HttpStatus.OK).body(buildInfo);
     }
 }
