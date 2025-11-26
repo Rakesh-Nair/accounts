@@ -20,3 +20,12 @@ spring:
       show-sql: true
 build:
   info: 1.9.4.7
+
+accounts:
+  message: "Welcome to Eazybank accounts related local APIs"
+  contactDetails:
+    name: "Monkey D Luffy"
+    email: "luffy@pirateking.com"
+  onCallSupport:
+    - (123)456789
+    - (987)654321

@@ -1,6 +1,7 @@
 package com.eazybytes.accounts.controller;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
+import com.eazybytes.accounts.dto.AccountsContactInfoDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ErrorResponseDto;
 import com.eazybytes.accounts.dto.ResponseDto;
@@ -39,6 +40,9 @@ public class AccountsController {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private AccountsContactInfoDto accountsContactInfoDto;
 
     public AccountsController(IAccountsService accountsService){
         this.accountsService = accountsService;
@@ -198,5 +202,28 @@ public class AccountsController {
     @GetMapping(path = "/java-version")
     public ResponseEntity<String> fetchJavaVersion(){
         return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("PATH"));
+    }
+
+    @Operation(
+            summary = "Fetch Contact Info Details",
+            description = "REST API to fetch Contact Info details"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @GetMapping(path = "/contact-info")
+    public ResponseEntity<AccountsContactInfoDto> fetchContactInfoDetails(){
+        return ResponseEntity.status(HttpStatus.OK).body(accountsContactInfoDto);
     }
 }
