@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+build:
+  info: 1.9.4.7_1
+
+accounts:
+  message: "Welcome to Eazybank accounts related qa APIs"
+  contactDetails:
+    name: "Roronoa Zoro"
+    email: "zoro@swordking.com"
+  onCallSupport:
+    - (123)456789
+    - (987)654321
