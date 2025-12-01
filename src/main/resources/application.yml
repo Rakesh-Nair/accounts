@@ -3,15 +3,8 @@ server:
 spring:
   application:
     name: accounts
-  config:
-    import:
-      - "application_qa.yml"
-      - "application_prod.yml"
-
   profiles:
-    active:
-      - "qa"
-
+    active: "prod"
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -25,14 +18,6 @@ spring:
     hibernate:
       ddl-auto: update
       show-sql: true
-build:
-  info: 1.9.4.7
 
-accounts:
-  message: "Welcome to Eazybank accounts related local APIs"
-  contactDetails:
-    name: "Monkey D Luffy"
-    email: "luffy@pirateking.com"
-  onCallSupport:
-    - (123)456789
-    - (987)654321
+  config:
+    import: "optional:configserver:http://localhost:8071/"
