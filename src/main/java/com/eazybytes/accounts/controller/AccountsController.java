@@ -35,7 +35,7 @@ public class AccountsController {
 
     private IAccountsService accountsService;
 
-    @Value("${build.info}")
+    @Value("${build.version}")
     private String buildInfo;
 
     @Autowired
