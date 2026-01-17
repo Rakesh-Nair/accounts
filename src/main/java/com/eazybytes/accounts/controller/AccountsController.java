@@ -6,6 +6,7 @@ import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ErrorResponseDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import com.eazybytes.accounts.service.IAccountsService;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -34,6 +37,8 @@ import org.springframework.web.bind.annotation.*;
 public class AccountsController {
 
     private IAccountsService accountsService;
+
+    private Logger logger = LoggerFactory.getLogger(AccountsController.class);
 
     @Value("${build.version}")
     private String buildInfo;
@@ -177,9 +182,18 @@ public class AccountsController {
     }
     )
     @GetMapping(path = "/build-info")
-    public ResponseEntity<String> fetchBuildInfo(){
+    @Retry(name = "fetchBuildInfo", fallbackMethod = "fetchBuildInfoFallback")
+    public ResponseEntity<String> fetchBuildInfo() /*throws TimeoutException*/ {
+        logger.info("calling fetchBuildInfo");
+        //throw new TimeoutException();
         return ResponseEntity.status(HttpStatus.OK).body(buildInfo);
     }
+
+    public ResponseEntity<String> fetchBuildInfoFallback(Throwable throwable){
+        logger.info("calling fetchBuildInfoFallback");
+        return ResponseEntity.status(HttpStatus.OK).body("28.9");
+    }
+
 
     @Operation(
             summary = "Fetch Java Version Details",
