@@ -30,4 +30,7 @@ public interface IAccountsService {
      * @return
      */
     public boolean deleteAccount(String mobileNumber);
+
+
+    public boolean updateCommunicationStatus(Long accountNumber);
 }
