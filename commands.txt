@@ -20,3 +20,46 @@ docker run -d -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-ma
 
 #Start kafka
 docker run -p 9092:9092 apache/kafka:4.2.0
+
+
+#Kubernetes Commands
+
+kubectl config get-contexts
+
+kubectl config get-clusters
+
+kubectl config use-context docker-desktop
+
+kubectl get nodes
+
+Kubernetes not starting
+=========================
+
+kubectl -n kubernetes-dashboard get pods -w
+kubernetes-dashboard-kong-9849c64bd-6kqr7               0/1     Init:ErrImagePull       0               6m32s
+kubernetes-dashboard-kong-9849c64bd-6kqr7               0/1     Init:ImagePullBackOff   0               6m44s
+
+kubectl -n kubernetes-dashboard describe pod kubernetes-dashboard-kong-9849c64bd-6kqr7
+kong:3.9": short read: expected 2601 bytes but got 0: unexpected EOF
+  Warning  Failed          3m33s (x5 over 6m54s)  kubelet            Error: ErrImagePull
+  Warning  Failed          108s (x18 over 6m53s)  kubelet            Error: ImagePullBackOff
+  Normal   BackOff         86s (x20 over 6m53s)   kubelet            Back-off pulling image "kong:3.9"
+
+  docker pull kong:3.9
+
+kubectl -n kubernetes-dashboard delete pod kubernetes-dashboard-kong-9849c64bd-6kqr7
+
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+
+kubectl proxy
+
+kubectl get deployments
+kubectl get replicaset
+kubectl get services
+kubectl get pods
+
+
+kubectl apply -f configserver.yaml
+deployment.apps/configserver-deployment created
+service/configserver created
+
