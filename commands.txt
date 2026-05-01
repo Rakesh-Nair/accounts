@@ -63,3 +63,16 @@ kubectl apply -f configserver.yaml
 deployment.apps/configserver-deployment created
 service/configserver created
 
+kubectl get events --sort-by=.metadata.creationTimestamp
+
+kubectl scale deployment accountns-deployment --replicas=1
+
+kubectl describe pod <pod name>
+
+kubectl set image deployment gatewayserver-deployment gatewayserver=eazybytes/gatewayserver:s11 --record #deploy new version
+
+kubectl rollout history deployment gatewayserver-deployment
+
+kubectl rollout undo deployment gatewayserver-deployment --to-revision=1
+
+
