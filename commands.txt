@@ -76,3 +76,24 @@ kubectl rollout history deployment gatewayserver-deployment
 kubectl rollout undo deployment gatewayserver-deployment --to-revision=1
 
 
+helm dependencies build
+
+helm install accounts accounts
+
+to upgrade - helm upgrade eazybank prod-env
+
+helm history eazybank
+
+to rollback - helm rollback eazybank 1
+
+
+to uninstall
+helm uninstall eazybank
+helm uninstall grafana
+helm uninstall tempo
+helm uninstall loki
+helm uninstall prometheus
+helm uninstall kafka
+helm uninstall keycloak
+
+
